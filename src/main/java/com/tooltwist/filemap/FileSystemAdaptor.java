@@ -8,17 +8,35 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class FileGroup_localFilesystem implements FileGroup {
+import com.tooltwist.xdata.XDException;
+import com.tooltwist.xdata.XSelector;
+
+public class FileSystemAdaptor implements IFileGroupAdaptor {
 	private String baseDir;
 
-	public FileGroup_localFilesystem(String baseDir) throws IOException {
+	@Override
+	public void init(XSelector config) throws FilemapException {
+		
+		// Check there is a directory specified
+		String directory;
+		try {
+			directory = config.getString("directory");
+		} catch (XDException e) {
+			throw new FilemapException("Error parsing config");
+		}
+		
+		// Checks it's an ansolute path
+		if ( !directory.startsWith("/"))
+			throw new FilemapException("Directory must start with /");
 		
 		// Check the directory exists
-		File dir = new File(baseDir);
+		File dir = new File(directory);
 		if ( !dir.exists())
-			throw new IOException("Unknown directory: " + baseDir);
+			throw new FilemapException("Unknown directory: " + directory);
+		
+		// Check it's a directory
 		if ( !dir.isDirectory())
-			throw new IOException("Not a directory: " + baseDir);
+			throw new FilemapException("Not a directory: " + directory);
 		
 		this.baseDir = dir.getAbsolutePath();
 	}
@@ -88,6 +106,12 @@ public class FileGroup_localFilesystem implements FileGroup {
 		String path = fullPath(relativePath);
 		FileInputStream inputStream = new FileInputStream(path);
 		return inputStream;
+	}
+
+	@Override
+	public String fileDescription(String relativePath) {
+		String path = fullPath(relativePath);
+		return "(local file: " + path + ")";
 	}
 
 }
