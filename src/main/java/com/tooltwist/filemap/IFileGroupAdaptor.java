@@ -44,4 +44,6 @@ public interface IFileGroupAdaptor {
 
 	String fileDescription(String relativePath);
 
+	Iterable<String> files(String directoryRelativePath);
+
 }

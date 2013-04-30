@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 import com.tooltwist.xdata.XDException;
 import com.tooltwist.xdata.XSelector;
@@ -112,6 +113,21 @@ public class FileSystemAdaptor implements IFileGroupAdaptor {
 	public String fileDescription(String relativePath) {
 		String path = fullPath(relativePath);
 		return "(local file: " + path + ")";
+	}
+
+	@Override
+	public Iterable<String> files(String directoryRelativePath) {
+		if ( !directoryRelativePath.endsWith("/"))
+			directoryRelativePath += "/";
+		ArrayList<String>list = new ArrayList<String>();
+		String absolutePath = fullPath(directoryRelativePath);
+		File dir = new File(absolutePath);
+		for (File file: dir.listFiles()) {
+			String name = file.getName();
+			String childRelativePath = directoryRelativePath + name;
+			list.add(childRelativePath);
+		}
+		return list;
 	}
 
 }
