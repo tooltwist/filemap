@@ -3,7 +3,7 @@
   <groupId>com.tooltwist</groupId>
   <artifactId>filemap</artifactId>
   <name>filemap</name>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <description>Virtual file mapping, onto various storage locations</description>
   <url>https://github.com/tooltwist/filemap</url>
 
@@ -173,7 +173,7 @@
 			<dependency>
 				<groupId>com.tooltwist</groupId>
 				<artifactId>xdata</artifactId>
-				<version>0.3.3-SNAPSHOT</version>
+				<version>0.3.2</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
