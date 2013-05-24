@@ -5,8 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -171,9 +169,9 @@ public class FileMap {
 		return files;
 	}
 	
-	public boolean deleteFile(String fileGroup, String relativePath) throws IOException {
+	public boolean delete(String fileGroup, String relativePath) throws IOException {
 		IFileGroupAdaptor plugin = getFileGroup(fileGroup);
-		boolean deleted = plugin.deleteFile(relativePath);
+		boolean deleted = plugin.delete(relativePath);
 		return deleted;
 	}
 	
