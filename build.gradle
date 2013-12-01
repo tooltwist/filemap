@@ -1,0 +1,30 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.7
+group = 'com.tooltwist'
+version = '0.99-SNAPSHOT'
+
+
+repositories {
+	ivy {
+		url "file:/${localRepo}"
+		layout "maven"
+	}
+    mavenCentral()
+}
+
+dependencies {
+	compile project(':xdata')
+	
+	testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+uploadArchives {
+    repositories {
+		ivy {
+			url "file:/${localRepo}"
+			layout "maven"
+		}
+    }
+}
