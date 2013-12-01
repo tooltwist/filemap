@@ -46,4 +46,5 @@ public interface IFileGroupAdaptor {
 
 	Iterable<String> files(String directoryRelativePath);
 
+	boolean delete(String relativePath) throws IOException;
 }

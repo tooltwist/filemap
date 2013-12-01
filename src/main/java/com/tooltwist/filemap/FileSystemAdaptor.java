@@ -129,5 +129,14 @@ public class FileSystemAdaptor implements IFileGroupAdaptor {
 		}
 		return list;
 	}
-
+	
+	public boolean delete(String relativePath) {
+		
+		String path = fullPath(relativePath);
+		File file = new File(path);
+		
+		return file.delete();
+		
+	}
+	
 }

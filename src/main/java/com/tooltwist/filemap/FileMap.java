@@ -5,8 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -164,5 +162,17 @@ public class FileMap {
 		boolean created = plugin.mkdirs(relativePath);
 		return created;
 	}
-
+	
+	public Iterable<String> files(String fileGroup, String directoryRelativePath) throws IOException {
+		IFileGroupAdaptor plugin = getFileGroup(fileGroup);
+		Iterable<String> files = plugin.files(directoryRelativePath);
+		return files;
+	}
+	
+	public boolean delete(String fileGroup, String relativePath) throws IOException {
+		IFileGroupAdaptor plugin = getFileGroup(fileGroup);
+		boolean deleted = plugin.delete(relativePath);
+		return deleted;
+	}
+	
 }
