@@ -1,18 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
-
-sourceCompatibility = 1.7
-group = 'com.tooltwist'
-version = '8.3-SNAPSHOT'
-
-
-repositories {
-	ivy {
-		url "file:/${localRepo}"
-		layout "maven"
-	}
-    mavenCentral()
-}
+apply plugin: 'artifactory'
+apply plugin: 'maven' // so a POM file can be uploaded to repo
 
 dependencies {
 	compile project(':xdata')
@@ -20,11 +9,75 @@ dependencies {
 	testCompile group: 'junit', name: 'junit', version: '4.8.2'
 }
 
-uploadArchives {
+
+/**************************************************************************************************
+ *
+ *	NOTE: Standard code from here on down.
+ *
+ *	Values defined in ../gradle.properties:
+ *		PROJECT_GROUP, PROJECT_SOURCE_COMPATIBILITY, PROJECT_VERSION, PROJECT_REPO
+ *
+ *	Values defined in ~/.gradle/gradle.properties:
+ *		artifactory_user, artifactory_password, artifactory_repo
+ */
+group = PROJECT_GROUP
+version = PROJECT_VERSION
+sourceCompatibility = PROJECT_SOURCE_COMPATIBILITY
+
+// Remember whether this is a snapshot or release, so we publish to the correct repository.
+project.ext.isSnapshot = version.endsWith("-SNAPSHOT")
+
+// Include jars for the artifactory plugin
+buildscript {
     repositories {
-		ivy {
-			url "file:/${localRepo}"
-			layout "maven"
-		}
+        maven {
+            url TOOLTWIST_ARTIFACTORY_CONTEXTURL + TOOLTWIST_ARTIFACTORY_REPO
+            credentials {
+                username = "${TOOLTWIST_ARTIFACTORY_USER}"
+                password = "${TOOLTWIST_ARTIFACTORY_PASSWORD}"
+            }
+	}
+	mavenCentral()
     }
+    dependencies {
+        classpath(group: 'org.jfrog.buildinfo', name: 'build-info-extractor-gradle', version: '2.0.9')
+    }
+}
+
+configurations {
+        published
+}
+
+artifactory {
+    publish {
+        repository {
+            contextUrl = "${PUBLISH_CONTEXTURL}"
+            repoKey = isSnapshot ? "${PUBLISH_SNAPSHOT_REPO}" : "${PUBLISH_RELEASE_REPO}"
+            username = "${ARTIFACTORY_USER}"
+            password = "${ARTIFACTORY_PASSWORD}"
+            maven = true
+	    ivy { 
+	      ivyLayout = '[organization]/[module]/ivy-[revision].xml' 
+	      artifactLayout = '[organization]/[module]/[revision]/[module]-[revision](-[classifier]).[ext]' 
+	      mavenCompatible = true
+	    } 
+        }
+	defaults {
+	    publishConfigs('archives', 'published')
+	    properties = ['build.status': "$it.project.status".toString()]
+	}
+    }
+    resolve {
+        repository {
+            contextUrl = "${RESOLVE_CONTEXTURL}"
+            repoKey = "${RESOLVE_REPO}"
+            username = "${ARTIFACTORY_USER}"
+            password = "${ARTIFACTORY_PASSWORD}"
+            maven = true
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '1.12'
 }
