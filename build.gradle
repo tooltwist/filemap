@@ -6,7 +6,7 @@ apply plugin: 'maven' // so a POM file can be uploaded to repo
 dependencies {
 	/* Build using standard ToolTwist libraries
 	*/
-	compile group: 'com.tooltwist', name: 'xdata', version: TOOLTWIST_VERSION
+	compile group: 'com.tooltwist', name: 'xdata', version: '5.0'
 
 	/* Build using ToolTwist source code
 	compile project(':xdata')
@@ -26,13 +26,13 @@ dependencies {
  *		PROJECT_GROUP
  *		PROJECT_VERSION
  *		PROJECT_SOURCE_COMPATIBILITY
- *		RESOLVE_CONTEXTURL
- *		RESOLVE_REPO
  *		PUBLISH_CONTEXTURL
  *		PUBLISH_SNAPSHOT_REPO
  *		PUBLISH_RELEASE_REPO
  *
  *	Values defined in ~/.gradle/gradle.properties:
+ *		RESOLVE_CONTEXTURL
+ *		RESOLVE_REPO
  *		ARTIFACTORY_USER
  *		ARTIFACTORY_PASSWORD
  */
