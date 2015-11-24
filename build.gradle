@@ -6,7 +6,7 @@ apply plugin: 'maven' // so a POM file can be uploaded to repo
 dependencies {
 	/* Build using standard ToolTwist libraries
 	*/
-	compile group: 'com.tooltwist', name: 'xdata', version: '5.0.0'
+	compile group: 'com.tooltwist', name: 'xdata', version: '5.0-SNAPSHOT'
 
 	/* Build using ToolTwist source code
 	compile project(':xdata')
