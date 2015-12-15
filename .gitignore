@@ -3,6 +3,7 @@
 /build
 /target
 .gradle
+.classpath
 pom.xml.old
 settings.gradle.old
 target.old
